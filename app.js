@@ -1,6 +1,4 @@
-/**
- * Hardcoded Lesson Data for Angelica's Lesson Storage
- */
+
 const LESSONS_DATA = [
   {
     id: 1,
