@@ -1,4 +1,3 @@
-
 const LESSONS_DATA = [
   {
     id: 1,
