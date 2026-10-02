@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LessonVault - Study Hub</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-blue-900/40 bg-slate-900/80 backdrop-blur-md sticky top-0 z-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 to-sky-500 flex items-center justify-center shadow-lg shadow-blue-500/25 text-white">
+          <i data-lucide="folder-git-2" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-lg text-white tracking-tight leading-tight">LessonVault</h1>
+          <p class="text-[11px] text-blue-400 font-medium">Custom Subjects & Local Storage</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-2.5">
+        <button id="openSubjectModalBtn" class="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs sm:text-sm font-medium px-3.5 py-2 rounded-lg transition shadow-sm">
+          <i data-lucide="tag" class="w-4 h-4 text-blue-400"></i> Manage Subjects
+        </button>
+        <button id="openLessonModalBtn" class="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-lg shadow-md shadow-blue-600/30 transition">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i> New Lesson
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- LEFT COLUMN: Calendar & Quick Filters (4 cols on lg) -->
+    <aside class="lg:col-span-4 space-y-6">
+      
+      <!-- Live Clock & Calendar Card -->
+      <div class="bg-gradient-to-b from-slate-900 to-slate-900/90 border border-blue-900/40 rounded-2xl p-5 shadow-xl shadow-blue-950/20">
+        <!-- Live Clock Header -->
+        <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div>
+            <div id="liveClock" class="text-2xl font-bold tracking-tight text-white font-mono">00:00:00</div>
+            <div id="liveDateShort" class="text-xs text-blue-400 font-medium mt-0.5">Loading date...</div>
+          </div>
+          <div class="w-9 h-9 rounded-lg bg-blue-950 border border-blue-800/50 flex items-center justify-center text-blue-400">
+            <i data-lucide="calendar" class="w-4 h-4"></i>
+          </div>
+        </div>
+
+        <!-- Interactive Calendar Month View -->
+        <div class="mt-4">
+          <div class="flex items-center justify-between mb-3 px-1">
+            <span id="calendarMonthYear" class="text-sm font-semibold text-white"></span>
+            <div class="flex gap-1">
+              <button id="prevMonthBtn" class="p-1 hover:bg-slate-800 rounded text-slate-400 hover:text-white transition">
+                <i data-lucide="chevron-left" class="w-4 h-4"></i>
+              </button>
+              <button id="nextMonthBtn" class="p-1 hover:bg-slate-800 rounded text-slate-400 hover:text-white transition">
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+          <!-- Day of week names -->
+          <div class="grid grid-cols-7 gap-1 text-center text-[11px] font-medium text-slate-500 mb-2">
+            <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+          </div>
+          <!-- Days grid -->
+          <div id="calendarDays" class="grid grid-cols-7 gap-1 text-center text-xs"></div>
+        </div>
+      </div>
+
+      <!-- Subject Explorer / Quick Filter List -->
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-sm">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Your Subjects</h3>
+          <span id="subjectCountBadge" class="text-[11px] bg-slate-800 text-blue-400 px-2 py-0.5 rounded-full font-mono">0</span>
+        </div>
+        <div id="subjectListSidebar" class="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+          <!-- Dynamically generated list -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT COLUMN: Lessons Area (8 cols on lg) -->
+    <main class="lg:col-span-8 space-y-5">
+      
+      <!-- Top Search & Filter Bar -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 flex flex-col sm:flex-row gap-3 items-center justify-between">
+        <div class="relative w-full sm:flex-1">
+          <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3 top-3"></i>
+          <input id="searchInput" type="text" placeholder="Search lesson titles, files, or notes..." class="w-full bg-slate-950 border border-slate-700/80 rounded-lg pl-9 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500" />
+        </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <select id="subjectFilterSelect" class="bg-slate-950 border border-slate-700/80 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-blue-500 w-full sm:w-auto">
+            <option value="all">All Subjects</option>
+            <!-- Injected dynamically -->
+          </select>
+          <select id="sortOrderSelect" class="bg-slate-950 border border-slate-700/80 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-blue-500">
+            <option value="newest">Newest Uploads</option>
+            <option value="oldest">Oldest Uploads</option>
+            <option value="title">By Title (A-Z)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Lessons Grid -->
+      <div id="lessonsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Injected via JavaScript -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="emptyLessonsState" class="hidden flex flex-col items-center justify-center p-12 bg-slate-900/40 border border-dashed border-slate-800 rounded-2xl text-center">
+        <div class="w-12 h-12 rounded-xl bg-blue-950/80 border border-blue-900/50 flex items-center justify-center text-blue-400 mb-3">
+          <i data-lucide="file-text" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-sm font-semibold text-slate-300">No lessons found</h3>
+        <p class="text-xs text-slate-500 max-w-sm mt-1">Start by adding custom subjects or save your first lesson note with an attached file.</p>
+        <button id="emptyNewLessonBtn" class="mt-4 text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1.5">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i> Create Lesson Now
+        </button>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- MODAL 1: ADD / EDIT LESSON -->
+  <div id="lessonModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 w-full max-w-lg rounded-2xl p-6 shadow-2xl relative">
+      <button id="closeLessonModalBtn" class="absolute top-5 right-5 text-slate-400 hover:text-white transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white text-xs">
+          <i data-lucide="file-plus-2" class="w-4 h-4"></i>
+        </div>
+        <h2 id="lessonModalTitle" class="text-base font-bold text-white">Create New Lesson</h2>
+      </div>
+
+      <form id="lessonForm" class="space-y-3.5">
+        <input type="hidden" id="editLessonId" value="" />
+
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Lesson Title *</label>
+          <input required id="lessonTitleInput" type="text" placeholder="e.g., Photosynthesis and Cellular Respiration" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500" />
+        </div>
+
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <label class="block text-xs font-medium text-slate-300">Subject *</label>
+            <button type="button" id="quickAddSubjectBtn" class="text-[11px] text-blue-400 hover:underline">+ New Subject</button>
+          </div>
+          <select required id="lessonSubjectSelect" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+            <!-- Dynamic list of user subjects -->
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Lesson Notes / Overview</label>
+          <textarea id="lessonNotesInput" rows="3" placeholder="Key points, summary, references..." class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 resize-none"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Attach File (PDF, Word, Images, PPTX, etc.)</label>
+          <div id="currentFileNotice" class="hidden text-xs text-blue-300 bg-blue-950/60 border border-blue-800 rounded-lg p-2.5 mb-2 flex items-center justify-between">
+            <span id="currentFileName" class="truncate"></span>
+            <button type="button" id="removeFileBtn" class="text-rose-400 hover:text-rose-300 text-[11px] font-semibold ml-2">Remove File</button>
+          </div>
+          <input id="lessonFileInput" type="file" class="w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500 cursor-pointer" />
+        </div>
+
+        <div class="flex justify-end gap-2.5 pt-3 border-t border-slate-800">
+          <button type="button" id="cancelLessonBtn" class="px-4 py-2 text-xs font-medium text-slate-400 hover:text-white">Cancel</button>
+          <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs px-5 py-2 rounded-lg transition shadow-md shadow-blue-600/30">Save Lesson</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: MANAGE SUBJECTS (ADD, EDIT, DELETE) -->
+  <div id="subjectModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 w-full max-w-md rounded-2xl p-6 shadow-2xl relative">
+      <button id="closeSubjectModalBtn" class="absolute top-5 right-5 text-slate-400 hover:text-white transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white text-xs">
+          <i data-lucide="tags" class="w-4 h-4"></i>
+        </div>
+        <h2 class="text-base font-bold text-white">Manage Subjects</h2>
+      </div>
+
+      <!-- Add New Subject Field -->
+      <form id="addSubjectForm" class="flex gap-2 mb-4">
+        <input required id="newSubjectNameInput" type="text" placeholder="Enter subject name (e.g. Zoology)" class="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500" />
+        <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs px-4 py-2 rounded-lg transition flex items-center gap-1">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+        </button>
+      </form>
+
+      <!-- Subject List Table -->
+      <div class="border border-slate-800 rounded-xl overflow-hidden max-h-60 overflow-y-auto">
+        <div id="subjectManageList" class="divide-y divide-slate-800">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+
+      <div class="mt-4 text-right">
+        <button type="button" id="doneSubjectBtn" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium px-4 py-2 rounded-lg">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

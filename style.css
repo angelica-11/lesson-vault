@@ -1,0 +1,28 @@
+/* Scrollbar Aesthetics */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #090d16;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+/* Modal Helper */
+.modal-show {
+  display: flex !important;
+}
+
+/* Custom Calendar Day Selection & Indicator */
+.calendar-today {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  border-radius: 0.5rem;
+}
