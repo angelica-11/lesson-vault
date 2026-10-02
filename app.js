@@ -1,140 +1,195 @@
 /**
- * LessonVault Application Logic
- * Supports dynamic Subjects and Lessons storage using browser IndexedDB.
+ * Hardcoded Lesson Data for Angelica's Lesson Storage
+ * All lessons, formatted overviews, and full paragraphs are stored right here.
  */
+const LESSONS_DATA = [
+  {
+    id: 1,
+    title: "Lesson 1: The World Wide Web — Evolution and Types",
+    subject: "Web Technologies",
+    date: "2026-09-12",
+    overview: "Covers the birth of the World Wide Web by Sir Tim Berners-Lee at CERN (1989), tracing its shift from static HTML pages to the decentralized, intelligent semantic web, as well as the fundamental categories of modern websites.",
+    whatWeLearned: `📌 The Birth of the Web:
+In 1989, Sir Tim Berners-Lee invented the World Wide Web at CERN in Geneva, Switzerland. Its primary original purpose was automated information sharing among scientists and researchers globally.
 
-// --- 1. INDEXEDDB CONFIGURATION & INITIALIZATION ---
-const DB_NAME = "LessonVaultDB_v2";
-const DB_VERSION = 1;
-let db;
+📌 The Evolution of the Web:
+• Web 1.0: The Static Web (Early 1990s – Early 2000s)
+  - Read-Only: Users consumed content passively from static, fixed pages.
+  - Limited Interactivity: Very little user input or dynamic forms; one-way communication.
+  - Technological Foundation: Basic HTML, HTTP, early web browsers, ISP-hosted homepages.
+  - Pioneers: Early Yahoo!, AOL, Britannica Online, personal homepages.
 
-function initDB() {
-  return new Promise((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, DB_VERSION);
+• Web 2.0: The Social & Dynamic Web (Early 2000s – Present)
+  - Interactive & User-Driven: Users shifted from passive consumers to active creators.
+  - Core Features: User-Generated Content (UGC), blogs, social networks, and real-time collaboration.
+  - Technologies: AJAX, HTML5, modern JavaScript frameworks.
+  - Platforms: YouTube, Facebook, Wikipedia, Amazon.
 
-    request.onupgradeneeded = (e) => {
-      const database = e.target.result;
+• Web 3.0: The Semantic & Decentralized Web (2010s – Present)
+  - Focus: Machine intelligence, data decentralization, and user ownership of data.
+  - Technologies: Blockchain, Artificial Intelligence (AI), Machine Learning (ML), Natural Language Processing (NLP), and AR/VR immersive interfaces.
+  - Applications: Ethereum smart contracts, DeFi platforms, and intelligent assistants.
 
-      // 1. Lessons Object Store
-      if (!database.objectStoreNames.contains("lessons")) {
-        const lessonStore = database.createObjectStore("lessons", { keyPath: "id", autoIncrement: true });
-        lessonStore.createIndex("subject", "subject", { unique: false });
-        lessonStore.createIndex("createdAt", "createdAt", { unique: false });
-      }
+📌 Types of Websites:
+• Personal Websites: Portfolios, personal blogs, and digital resumes for self-expression and identity.
+• Business Websites: Corporate sites and local business profiles for customer trust and commerce.
+• E-Commerce Websites: Online marketplaces with catalogs, carts, and secure payment gateways (Amazon, eBay).
+• Educational Websites: Course platforms and tutorial libraries for skill development (Coursera, Khan Academy).
+• News, Social Media & Nonprofits: BBC, CNN, Facebook, Instagram, UNICEF, and the Red Cross.`
+  },
+  {
+    id: 2,
+    title: "Lesson 1.1: Transformative Impact of ICT on Daily Life",
+    subject: "ICT Foundations",
+    date: "2026-09-18",
+    overview: "An exploration of how Information and Communications Technology (ICT) and computers have fundamentally reshaped communication, banking, education, healthcare, and our domestic environment.",
+    whatWeLearned: `📌 Daily Life Areas Transformed by ICT:
+• Communication: ICT replaced slow, traditional methods like postal mail with instant, affordable options such as email, messaging apps, and video conferencing (WhatsApp, Zoom, Skype), making it easy to stay connected globally.
+• Education: E-learning platforms, online classrooms, and digital courseware (Google Classroom, Coursera, Khan Academy) make learning accessible from any location.
+• Banking & Finance: Online banking apps and digital wallets enable users to transfer funds, pay bills, and manage accounts 24/7 without stepping into a physical bank.
+• E-Commerce & Retail: Facilitates shopping from home via platforms like Amazon and eBay, streamlining personal and commercial transactions.
+• Healthcare & Telemedicine: Electronic Health Records (EHR) enhance patient care, while telemedicine enables remote consultations and faster medical research.
+• Transportation & Navigation: GPS systems (Google Maps, Waze) and ride-hailing services (Uber, Grab) optimize route planning and transit.
+• Smart Homes & IoT: Smart thermostats, lights, and automated voice assistants (Alexa, Google Home) bring convenience and security into everyday living.`
+  },
+  {
+    id: 3,
+    title: "Lesson 2: Parts of a Computer — Core Anatomy & Peripherals",
+    subject: "Computer Hardware",
+    date: "2026-09-25",
+    overview: "A comprehensive breakdown of all 20 internal and external components of a computer system, along with explicit categorizations for Input and Output peripheral devices.",
+    whatWeLearned: `📌 Core Computer Hardware:
+1. CPU (Central Processing Unit): The brain of the computer that executes instructions, performs calculations, and manages data flow.
+2. Motherboard: The main circuit board connecting the CPU, RAM, storage, and peripherals.
+3. RAM (Random Access Memory): High-speed, volatile short-term memory that holds active applications and processes.
+4. Storage (SSD / HDD): Non-volatile permanent storage for the operating system and files. SSDs use flash memory and are much faster than mechanical HDDs.
+5. PSU (Power Supply Unit): Converts wall AC electricity into low-voltage DC power for internal components.
+6. GPU (Graphics Processing Unit): Renders images, 3D graphics, and video, taking heavy graphical loads off the CPU.
+7. Cooling System & Heat Sink: Fans, liquid radiators, and heat sinks prevent components from overheating and thermal throttling.
+8. NIC (Network Interface Card): Enables physical (Ethernet) or wireless connectivity to a network or the internet.
+9. BIOS/UEFI: Firmware that runs the Power-On Self-Test (POST) and initializes hardware during startup.
+10. Computer Case (Chassis): Enclosure that protects parts and routes optimal airflow for cooling.
 
-      // 2. Subjects Object Store (User-defined)
-      if (!database.objectStoreNames.contains("subjects")) {
-        database.createObjectStore("subjects", { keyPath: "id", autoIncrement: true });
-      }
-    };
+📌 Input Devices (Sending data INTO the computer):
+• Keyboard: Enters text, numbers, and system shortcuts.
+• Mouse: Pointing device used to select, drag, and interact with screen elements.
+• Scanner: Converts physical paper documents and photos into digital image formats.
+• Microphone: Captures analog acoustic sound and converts it into digital audio signals.
+• Webcam: Captures live video for conferencing, streaming, or recording.
+• Touchscreen: Acts as both an input and output device by sensing touch coordinates and gestures.
+• Joystick: Used primarily for precise movement and control in games or simulations.
 
-    request.onsuccess = (e) => {
-      db = e.target.result;
-      resolve(db);
-    };
+📌 Output Devices (Receiving data OUT of the computer):
+• Monitor: Displays the visual desktop, applications, and graphical feedback.
+• Printer: Generates physical hard copies of digital documents and photos.
+• Speakers & Headphones: Convert digital sound signals into audible acoustic sound waves.
+• Projector: Magnifies and casts visual displays onto large screens or surfaces.
+• Plotter: Specialized high-precision vector printer used in engineering and architecture.
+• Braille Reader: Translates screen text into tactile Braille pins for visually impaired users.`
+  },
+  {
+    id: 4,
+    title: "Lesson 3: History of Computing — Periods & Generations",
+    subject: "History of Computing",
+    date: "2026-10-01",
+    overview: "Chronicles the evolution of computers through early mechanical eras, electromechanical milestones, vacuum tube and transistor generations, up to modern cloud and AI systems.",
+    whatWeLearned: `📌 Historical Periods of Computing:
+1. Pre-Mechanical Period (Before 1642): Manual arithmetic tools such as the Abacus and the ancient Greek Antikythera Mechanism (c. 100 BCE).
+2. Mechanical Period (1642–1830):
+   • Blaise Pascal (1642): Invented the Pascaline calculator for addition and subtraction.
+   • Gottfried Leibniz (1673): Developed the Leibniz Wheel for multiplication and division.
+   • Charles Babbage (1830s): Designed the Analytical Engine, the first automatic mechanical computer design (featuring input, memory, processor, and output).
+3. Electromechanical Period (1900–1940):
+   • Konrad Zuse (1941): Created the Z3, the first programmable digital computer using relays.
+   • Howard Aiken (1944): Developed the IBM Harvard Mark I.
+4. Vacuum Tube Period (1940–1950s): Electronic computers like ENIAC (1945, using ~18,000 tubes) and Colossus (1944).
+5. Transistor Period (1950s–1960s): Transistors replaced vacuum tubes, creating smaller, more reliable business mainframes (e.g., IBM 1401).
+6. Integrated Circuit Period (1960s–1970s): Silicon chips packed multiple transistors, enabling the IBM System/360 and early kits like the Altair 8800.
+7. Microprocessor Period (1970s–1980s): Single-chip CPU invention (Intel 4004) and early home computers like the Apple II.
+8. Personal Computer Era (1980s–1990s): IBM PC standardized the PC industry, while Microsoft Windows popularized Graphical User Interfaces (GUIs).
+9. Internet & Networking Era (1990s–2000s): Launch of the World Wide Web (1991) and the rise of mobile wireless computing.
+10. Cloud & Modern Computing (2000s–Present): Cloud infrastructure (AWS, Google Cloud, Azure), big data, and generative Artificial Intelligence.`
+  },
+  {
+    id: 5,
+    title: "Midterm: Netiquette & Computer Ethics in the IT Era",
+    subject: "Digital Ethics",
+    date: "2026-10-02",
+    overview: "Explores acceptable social conventions in digital spaces, Virginia Shea's 10 Rules of Netiquette, common online violations, and the Computer Ethics Institute's 10 Commandments.",
+    whatWeLearned: `📌 What is Netiquette?
+Netiquette (Network + Etiquette) is the set of social conventions governing polite, respectful, and responsible behavior online. "Behind every screen is a real person — netiquette exists to protect that humanity in digital spaces."
 
-    request.onerror = (e) => reject("DB Error: " + e.target.errorCode);
-  });
-}
+📌 Virginia Shea's 10 Rules of Netiquette:
+1. Remember the human on the other side of the screen.
+2. Hold the same standards of behavior online that you follow in real life.
+3. Know where you are in cyberspace and adapt to the context.
+4. Respect other people's time and bandwidth.
+5. Make yourself look good online — be accurate, thoughtful, and courteous.
+6. Share expert knowledge generously with others.
+7. Help keep flame wars and heated arguments under control.
+8. Respect other people's privacy.
+9. Don't abuse power or special administrative access.
+10. Be forgiving of other people's mistakes.
 
-// --- 2. DATABASE CRUD OPERATIONS ---
+📌 Common Violations to Avoid:
+• Flaming: Posting hostile or insulting messages to provoke anger.
+• Trolling: Deliberately disrupting conversations with inflammatory content.
+• Spamming: Flooding channels with unsolicited, repetitive messages.
+• Cyberbullying: Repeated, targeted harassment of a person online.
+• Oversharing: Exposing private personal data without thought of security risks.
 
-// Lessons CRUD
-async function dbAddLesson(lesson) {
-  return new Promise((res, rej) => {
-    const tx = db.transaction(["lessons"], "readwrite");
-    const req = tx.objectStore("lessons").add(lesson);
-    req.onsuccess = () => res(req.result);
-    req.onerror = rej;
-  });
-}
+📌 The 10 Commandments of Computer Ethics (CEI 1992):
+1. Thou shalt not use a computer to harm other people.
+2. Thou shalt not interfere with other people's computer work.
+3. Thou shalt not snoop around in other people's computer files.
+4. Thou shalt not use a computer to steal.
+5. Thou shalt not use a computer to bear false witness (spread lies/disinformation).
+6. Thou shalt not copy or use proprietary software for which you have not paid.
+7. Thou shalt not use other people's computer resources without authorization.
+8. Thou shalt not appropriate other people's intellectual output (plagiarism).
+9. Thou shalt think about the social consequences of the program you are writing.
+10. Thou shalt always use a computer in ways that ensure consideration and respect for others.`
+  },
+  {
+    id: 6,
+    title: "Module: Cybercrimes and Philippine Cyber Laws",
+    subject: "Cyber Laws & Security",
+    date: "2026-10-02",
+    overview: "A detailed review of RA 10175 (Cybercrime Prevention Act of 2012) and RA 10173 (Data Privacy Act of 2012), including offenses, penalties, data subject rights, and cyber hygiene.",
+    whatWeLearned: `📌 Cybercrime Basics:
+Cybercrime is any unlawful act committed using, or directed at, a computer or digital device. Computers can act as the TARGET (hacking, DDoS), the TOOL (phishing, fraud, cyber libel), or the STORAGE/MEDIUM (storing stolen assets).
 
-async function dbUpdateLesson(lesson) {
-  return new Promise((res, rej) => {
-    const tx = db.transaction(["lessons"], "readwrite");
-    const req = tx.objectStore("lessons").put(lesson);
-    req.onsuccess = () => res(req.result);
-    req.onerror = rej;
-  });
-}
+📌 RA 10175 — Cybercrime Prevention Act of 2012:
+• Section 4(a) Offenses Against Data & Systems:
+  - Illegal Access: Accessing a system without right.
+  - Illegal Interception: Sniffing non-public communications without right.
+  - Data Interference: Altering, deleting, or corrupting data (e.g., deleting school grade records).
+  - System Interference: Hindering system operations (e.g., DDoS attacks).
+  - Misuse of Devices: Selling malware or stolen credentials.
+  - Cyber-squatting: Registering trademarks/domains in bad faith for profit.
+• Section 4(b) Computer-Related Offenses:
+  - Forgery, Fraud, and Identity Theft.
+• Section 4(c) Content-Related Offenses:
+  - Cybersex, Child Sexual Abuse/Exploitation, and Cyber Libel (held constitutional for the original author only).
+• Struck Down by the Supreme Court:
+  - Section 19 (website takedown without court order), Section 12 (real-time collection of traffic data without court warrant), and unsolicited commercial ads (spam).
+• Enforcement Agencies: DOJ Office of Cybercrime (OOC), PNP Anti-Cybercrime Group (PNP-ACG), NBI Cybercrime Division (NBI-CCD), and CICC.
 
-async function dbGetLessons() {
-  return new Promise((res, rej) => {
-    const tx = db.transaction(["lessons"], "readonly");
-    const req = tx.objectStore("lessons").getAll();
-    req.onsuccess = () => res(req.result);
-    req.onerror = rej;
-  });
-}
+📌 RA 10173 — Data Privacy Act of 2012:
+• Protects individual privacy while allowing the lawful free flow of data.
+• 3 Core Principles: Transparency, Legitimate Purpose, and Proportionality.
+• Rights of the Data Subject:
+  - Right to be informed, right to access, right to object, right to erasure/blocking, right to damages, right to data portability, right to rectify, and right to file a complaint with the NPC.
+• Mandatory Breach Notification: Serious breaches must be reported to the National Privacy Commission (NPC) within 72 hours.
 
-async function dbDeleteLesson(id) {
-  return new Promise((res, rej) => {
-    const tx = db.transaction(["lessons"], "readwrite");
-    const req = tx.objectStore("lessons").delete(id);
-    req.onsuccess = () => res();
-    req.onerror = rej;
-  });
-}
+📌 Individual Prevention & Cyber Hygiene:
+• Use strong unique passwords & MFA.
+• Be alert to Red Flags: Urgency, requests for OTPs/PINs, suspicious links, and unexpected prize notifications.
+• When victimized: Stop and secure accounts, save evidence (screenshots, URLs, logs), and report immediately to PNP-ACG or NBI-CCD.`
+  }
+];
 
-// Subjects CRUD
-async function dbGetSubjects() {
-  return new Promise((res, rej) => {
-    const tx = db.transaction(["subjects"], "readonly");
-    const req = tx.objectStore("subjects").getAll();
-    req.onsuccess = () => res(req.result);
-    req.onerror = rej;
-  });
-}
-
-async function dbAddSubject(name) {
-  return new Promise((res, rej) => {
-    const tx = db.transaction(["subjects"], "readwrite");
-    const req = tx.objectStore("subjects").add({ name, createdAt: new Date().toISOString() });
-    req.onsuccess = () => res(req.result);
-    req.onerror = rej;
-  });
-}
-
-async function dbUpdateSubject(id, newName) {
-  return new Promise((res, rej) => {
-    const tx = db.transaction(["subjects"], "readwrite");
-    const store = tx.objectStore("subjects");
-    const getReq = store.get(id);
-
-    getReq.onsuccess = () => {
-      const data = getReq.result;
-      data.name = newName;
-      const updateReq = store.put(data);
-      updateReq.onsuccess = () => res();
-      updateReq.onerror = rej;
-    };
-  });
-}
-
-async function dbDeleteSubject(id, subjectName) {
-  return new Promise(async (res, rej) => {
-    // 1. Delete the subject
-    const tx = db.transaction(["subjects"], "readwrite");
-    tx.objectStore("subjects").delete(id);
-    
-    // 2. Also rename any lesson associated with this deleted subject to 'Uncategorized'
-    const lessons = await dbGetLessons();
-    const updateTx = db.transaction(["lessons"], "readwrite");
-    const lStore = updateTx.objectStore("lessons");
-
-    lessons.forEach(lesson => {
-      if (lesson.subject === subjectName) {
-        lesson.subject = "Uncategorized";
-        lStore.put(lesson);
-      }
-    });
-
-    updateTx.oncomplete = () => res();
-    updateTx.onerror = rej;
-  });
-}
-
-// --- 3. LIVE CLOCK & MINI-CALENDAR WIDGET ---
+// --- CLOCK & CALENDAR ---
 let currentCalDate = new Date();
 
 function initClockAndCalendar() {
@@ -178,13 +233,11 @@ function renderCalendar(date) {
   const totalDays = new Date(year, month + 1, 0).getDate();
   const today = new Date();
 
-  // Empty slots for previous month offset
   for (let i = 0; i < firstDayIndex; i++) {
     const empty = document.createElement("div");
     daysContainer.appendChild(empty);
   }
 
-  // Days of current month
   for (let day = 1; day <= totalDays; day++) {
     const dayEl = document.createElement("div");
     dayEl.className = "py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 transition cursor-pointer text-xs";
@@ -202,171 +255,52 @@ function renderCalendar(date) {
   }
 }
 
-// --- 4. TIME UTILITY (RELATIVE & ABSOLUTE FORMATTING) ---
-function formatDates(isoString) {
-  const date = new Date(isoString);
-  const full = date.toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-
-  // Relative time computation
-  const diffSec = Math.floor((new Date() - date) / 1000);
-  let relative = "Just now";
-  if (diffSec >= 60 && diffSec < 3600) relative = `${Math.floor(diffSec / 60)}m ago`;
-  else if (diffSec >= 3600 && diffSec < 86400) relative = `${Math.floor(diffSec / 3600)}h ago`;
-  else if (diffSec >= 86400) relative = `${Math.floor(diffSec / 86400)}d ago`;
-
-  return { full, relative };
+// --- CATEGORIES & SIDEBAR ---
+function extractSubjects() {
+  return Array.from(new Set(LESSONS_DATA.map(l => l.subject)));
 }
 
-// --- 5. RENDER LESSONS & SUBJECTS ---
-async function refreshAll() {
-  const subjects = await dbGetSubjects();
-  const lessons = await dbGetLessons();
-
-  renderSubjectDropdowns(subjects);
-  renderSubjectSidebar(subjects, lessons);
-  renderSubjectManageList(subjects);
-  renderLessonsGrid(lessons);
-}
-
-function renderSubjectDropdowns(subjects) {
+function renderSubjects() {
+  const subjects = extractSubjects();
   const filterSelect = document.getElementById("subjectFilterSelect");
-  const formSelect = document.getElementById("lessonSubjectSelect");
-
-  const currentFilterVal = filterSelect.value;
-  const currentFormVal = formSelect.value;
-
-  // Filter dropdown
-  filterSelect.innerHTML = `<option value="all">All Subjects</option>`;
-  subjects.forEach(s => {
-    filterSelect.innerHTML += `<option value="${s.name}">${s.name}</option>`;
-  });
-  if ([...filterSelect.options].some(o => o.value === currentFilterVal)) {
-    filterSelect.value = currentFilterVal;
-  }
-
-  // Form dropdown
-  formSelect.innerHTML = "";
-  if (subjects.length === 0) {
-    formSelect.innerHTML = `<option value="General">General (Default)</option>`;
-  } else {
-    subjects.forEach(s => {
-      formSelect.innerHTML += `<option value="${s.name}">${s.name}</option>`;
-    });
-  }
-  if ([...formSelect.options].some(o => o.value === currentFormVal)) {
-    formSelect.value = currentFormVal;
-  }
-}
-
-function renderSubjectSidebar(subjects, lessons) {
-  const list = document.getElementById("subjectListSidebar");
+  const sidebarList = document.getElementById("subjectListSidebar");
   const countBadge = document.getElementById("subjectCountBadge");
+
   countBadge.textContent = subjects.length;
 
-  list.innerHTML = "";
+  filterSelect.innerHTML = `<option value="all">All Folders</option>`;
+  sidebarList.innerHTML = "";
 
-  if (subjects.length === 0) {
-    list.innerHTML = `<p class="text-xs text-slate-500 py-2">No subjects yet. Click 'Manage Subjects' to add one.</p>`;
-    return;
-  }
+  // "All Folders" quick button
+  const allItem = document.createElement("div");
+  allItem.className = "flex items-center justify-between text-xs py-2 px-3 rounded-xl hover:bg-blue-950/60 cursor-pointer text-slate-300 hover:text-white transition font-medium border border-transparent hover:border-blue-900/40";
+  allItem.innerHTML = `<span class="flex items-center gap-2"><i data-lucide="folder" class="w-3.5 h-3.5 text-blue-400"></i> All Folders</span><span class="text-[10px] bg-blue-950 border border-blue-900/50 text-blue-300 px-2 py-0.5 rounded-full font-mono">${LESSONS_DATA.length}</span>`;
+  allItem.addEventListener("click", () => {
+    filterSelect.value = "all";
+    applyFilters();
+  });
+  sidebarList.appendChild(allItem);
 
-  subjects.forEach(sub => {
-    const count = lessons.filter(l => l.subject === sub.name).length;
+  subjects.forEach(subject => {
+    filterSelect.innerHTML += `<option value="${subject}">${subject}</option>`;
+
+    const count = LESSONS_DATA.filter(l => l.subject === subject).length;
     const item = document.createElement("div");
-    item.className = "flex items-center justify-between text-xs py-1.5 px-2 rounded-lg hover:bg-slate-800/80 cursor-pointer text-slate-300 transition";
+    item.className = "flex items-center justify-between text-xs py-2 px-3 rounded-xl hover:bg-slate-800/60 cursor-pointer text-slate-400 hover:text-slate-200 transition border border-transparent hover:border-slate-700/50";
     item.innerHTML = `
-      <span class="truncate hover:text-white font-medium">${sub.name}</span>
-      <span class="text-[10px] bg-slate-800 text-blue-400 px-1.5 py-0.5 rounded-full">${count}</span>
+      <span class="truncate flex items-center gap-2"><i data-lucide="folder-closed" class="w-3.5 h-3.5 text-slate-500"></i> ${subject}</span>
+      <span class="text-[10px] bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-mono">${count}</span>
     `;
     item.addEventListener("click", () => {
-      document.getElementById("subjectFilterSelect").value = sub.name;
-      applyFiltersAndSort();
+      filterSelect.value = subject;
+      applyFilters();
     });
-    list.appendChild(item);
+    sidebarList.appendChild(item);
   });
 }
 
-function renderSubjectManageList(subjects) {
-  const container = document.getElementById("subjectManageList");
-  container.innerHTML = "";
-
-  if (subjects.length === 0) {
-    container.innerHTML = `<div class="p-3 text-xs text-slate-500 text-center">No subjects created yet.</div>`;
-    return;
-  }
-
-  subjects.forEach(sub => {
-    const row = document.createElement("div");
-    row.className = "p-3 flex items-center justify-between gap-3 text-xs bg-slate-900";
-    row.innerHTML = `
-      <span class="text-slate-200 font-medium truncate subject-name-label">${sub.name}</span>
-      <div class="flex items-center gap-1.5">
-        <button class="edit-sub-btn p-1 text-slate-400 hover:text-blue-400 rounded transition" title="Rename Subject">
-          <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
-        </button>
-        <button class="del-sub-btn p-1 text-slate-400 hover:text-rose-400 rounded transition" title="Delete Subject">
-          <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-        </button>
-      </div>
-    `;
-
-    // Edit Subject Name
-    row.querySelector(".edit-sub-btn").addEventListener("click", async () => {
-      const newName = prompt(`Rename subject "${sub.name}" to:`, sub.name);
-      if (newName && newName.trim() !== "" && newName.trim() !== sub.name) {
-        await dbUpdateSubject(sub.id, newName.trim());
-        refreshAll();
-      }
-    });
-
-    // Delete Subject
-    row.querySelector(".del-sub-btn").addEventListener("click", async () => {
-      if (confirm(`Delete subject "${sub.name}"? Existing lessons will become "Uncategorized".`)) {
-        await dbDeleteSubject(sub.id, sub.name);
-        refreshAll();
-      }
-    });
-
-    container.appendChild(row);
-  });
-
-  lucide.createIcons();
-}
-
-async function applyFiltersAndSort() {
-  const lessons = await dbGetLessons();
-  const search = document.getElementById("searchInput").value.toLowerCase();
-  const selectedSubject = document.getElementById("subjectFilterSelect").value;
-  const sortOrder = document.getElementById("sortOrderSelect").value;
-
-  let filtered = lessons.filter(l => {
-    const matchesSubject = selectedSubject === "all" || l.subject === selectedSubject;
-    const matchesSearch =
-      l.title.toLowerCase().includes(search) ||
-      (l.notes && l.notes.toLowerCase().includes(search)) ||
-      (l.file && l.file.name.toLowerCase().includes(search));
-    return matchesSubject && matchesSearch;
-  });
-
-  // Sorting
-  if (sortOrder === "newest") {
-    filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  } else if (sortOrder === "oldest") {
-    filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-  } else if (sortOrder === "title") {
-    filtered.sort((a, b) => a.title.localeCompare(b.title));
-  }
-
-  renderLessonsGrid(filtered);
-}
-
-function renderLessonsGrid(lessons) {
+// --- RENDER LESSON FOLDER CARDS ---
+function renderLessons(lessons) {
   const grid = document.getElementById("lessonsGrid");
   const empty = document.getElementById("emptyLessonsState");
   grid.innerHTML = "";
@@ -378,241 +312,105 @@ function renderLessonsGrid(lessons) {
   empty.classList.add("hidden");
 
   lessons.forEach(lesson => {
-    const { full, relative } = formatDates(lesson.createdAt);
+    const formattedDate = new Date(lesson.date).toLocaleDateString(undefined, {
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    });
 
     const card = document.createElement("div");
-    card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between hover:border-blue-500/50 transition group";
-
-    let fileSnippet = "";
-    if (lesson.file) {
-      fileSnippet = `
-        <div class="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
-          <div class="flex items-center gap-1.5 text-slate-300 truncate max-w-[200px]" title="${lesson.file.name}">
-            <i data-lucide="paperclip" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>
-            <span class="truncate">${lesson.file.name}</span>
-          </div>
-          <button class="download-file-btn text-blue-400 hover:text-blue-300 text-xs font-semibold flex items-center gap-1 ml-2" data-id="${lesson.id}">
-            <i data-lucide="download" class="w-3.5 h-3.5"></i> Download
-          </button>
-        </div>
-      `;
-    }
+    // Digital Folder Aesthetic Box
+    card.className = "bg-[#111c35] border border-blue-900/30 hover:border-blue-500/60 rounded-2xl p-5 flex flex-col justify-between transition-all duration-200 group shadow-lg hover:shadow-blue-500/10 cursor-pointer";
 
     card.innerHTML = `
       <div>
-        <!-- Top bar: Subject badge and Action Buttons -->
-        <div class="flex items-center justify-between gap-2 mb-2.5">
-          <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-blue-950 text-blue-400 border border-blue-900/50">
-            ${lesson.subject}
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <span class="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-blue-950/80 text-blue-400 border border-blue-800/40 flex items-center gap-1.5">
+            <i data-lucide="folder" class="w-3 h-3"></i> ${lesson.subject}
           </span>
-          <div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition">
-            <button class="edit-lesson-btn p-1 text-slate-400 hover:text-blue-400 transition" data-id="${lesson.id}" title="Edit Lesson">
-              <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
-            </button>
-            <button class="delete-lesson-btn p-1 text-slate-400 hover:text-rose-400 transition" data-id="${lesson.id}" title="Delete Lesson">
-              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-            </button>
-          </div>
+          <span class="text-[11px] text-slate-400 flex items-center gap-1 font-mono">
+            <i data-lucide="calendar" class="w-3 h-3 text-slate-500"></i> ${formattedDate}
+          </span>
         </div>
 
-        <h3 class="text-sm font-bold text-white mb-1.5 leading-snug">${lesson.title}</h3>
-        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">${lesson.notes || "No notes provided."}</p>
+        <h3 class="text-sm sm:text-base font-bold text-white mb-2 leading-snug group-hover:text-blue-300 transition">${lesson.title}</h3>
+        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3 mb-4">${lesson.overview}</p>
       </div>
 
-      <div>
-        ${fileSnippet}
-
-        <!-- Uploaded Timestamp -->
-        <div class="flex items-center justify-between text-[11px] text-slate-500 mt-3 pt-2 border-t border-slate-800/60">
-          <span class="flex items-center gap-1" title="Uploaded at ${full}">
-            <i data-lucide="clock" class="w-3 h-3 text-slate-500"></i> ${relative}
-          </span>
-          <span class="text-[10px] text-slate-500">${full}</span>
-        </div>
+      <div class="pt-3 border-t border-slate-800/80">
+        <button class="open-details-btn w-full bg-[#0b1120] hover:bg-blue-600 border border-slate-800 hover:border-blue-500 text-blue-400 hover:text-white font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-2 transition duration-150 shadow-sm" data-id="${lesson.id}">
+          <i data-lucide="book-open" class="w-4 h-4"></i> Open Folder & Read Lesson
+        </button>
       </div>
     `;
 
-    // Download trigger
-    const downloadBtn = card.querySelector(".download-file-btn");
-    if (downloadBtn) {
-      downloadBtn.addEventListener("click", () => downloadLessonFile(lesson.id));
-    }
-
-    // Delete trigger
-    card.querySelector(".delete-lesson-btn").addEventListener("click", async () => {
-      if (confirm(`Are you sure you want to delete "${lesson.title}"?`)) {
-        await dbDeleteLesson(lesson.id);
-        refreshAll();
-      }
-    });
-
-    // Edit trigger
-    card.querySelector(".edit-lesson-btn").addEventListener("click", () => openEditLessonModal(lesson));
-
+    // Click anywhere on card or button to open
+    card.addEventListener("click", () => openReadModal(lesson));
     grid.appendChild(card);
   });
 
   lucide.createIcons();
 }
 
-async function downloadLessonFile(id) {
-  const lessons = await dbGetLessons();
-  const target = lessons.find(l => l.id === id);
-  if (target && target.file && target.file.blob) {
-    const url = URL.createObjectURL(target.file.blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = target.file.name;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+// --- FILTER & SORT ---
+function applyFilters() {
+  const search = document.getElementById("searchInput").value.toLowerCase();
+  const selectedSubject = document.getElementById("subjectFilterSelect").value;
+  const sortOrder = document.getElementById("sortOrderSelect").value;
+
+  let filtered = LESSONS_DATA.filter(l => {
+    const matchesSubject = selectedSubject === "all" || l.subject === selectedSubject;
+    const matchesSearch =
+      l.title.toLowerCase().includes(search) ||
+      l.overview.toLowerCase().includes(search) ||
+      l.whatWeLearned.toLowerCase().includes(search);
+    return matchesSubject && matchesSearch;
+  });
+
+  if (sortOrder === "asc") {
+    filtered.sort((a, b) => a.id - b.id);
+  } else if (sortOrder === "desc") {
+    filtered.sort((a, b) => b.id - a.id);
+  } else if (sortOrder === "title") {
+    filtered.sort((a, b) => a.title.localeCompare(b.title));
   }
+
+  renderLessons(filtered);
 }
 
-// --- 6. MODALS & FORMS LOGIC ---
+// --- MODAL CONTROLS ---
+const readModal = document.getElementById("readModal");
 
-// Lesson Modal Controls
-const lessonModal = document.getElementById("lessonModal");
-const lessonForm = document.getElementById("lessonForm");
-let existingFileBlob = null; // Holds file reference when editing without replacing
+function openReadModal(lesson) {
+  document.getElementById("modalSubjectText").textContent = lesson.subject;
+  document.getElementById("modalTitle").textContent = lesson.title;
+  document.getElementById("modalDate").textContent = `Module Date: ${new Date(lesson.date).toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" })}`;
+  document.getElementById("modalOverview").textContent = lesson.overview;
+  document.getElementById("modalTakeaways").textContent = lesson.whatWeLearned;
 
-function toggleLessonModal(show) {
-  if (show) lessonModal.classList.add("modal-show");
-  else {
-    lessonModal.classList.remove("modal-show");
-    lessonForm.reset();
-    document.getElementById("editLessonId").value = "";
-    document.getElementById("currentFileNotice").classList.add("hidden");
-    existingFileBlob = null;
-  }
+  readModal.classList.add("modal-show");
+  lucide.createIcons();
 }
 
-function openEditLessonModal(lesson) {
-  document.getElementById("lessonModalTitle").textContent = "Edit Lesson";
-  document.getElementById("editLessonId").value = lesson.id;
-  document.getElementById("lessonTitleInput").value = lesson.title;
-  document.getElementById("lessonSubjectSelect").value = lesson.subject;
-  document.getElementById("lessonNotesInput").value = lesson.notes || "";
-
-  const notice = document.getElementById("currentFileNotice");
-  if (lesson.file) {
-    existingFileBlob = lesson.file;
-    document.getElementById("currentFileName").textContent = `Attached: ${lesson.file.name}`;
-    notice.classList.remove("hidden");
-  } else {
-    existingFileBlob = null;
-    notice.classList.add("hidden");
-  }
-
-  toggleLessonModal(true);
+function closeReadModal() {
+  readModal.classList.remove("modal-show");
 }
 
-document.getElementById("removeFileBtn").addEventListener("click", () => {
-  existingFileBlob = null;
-  document.getElementById("currentFileNotice").classList.add("hidden");
+document.getElementById("closeReadModalBtn").addEventListener("click", closeReadModal);
+document.getElementById("closeModalBottomBtn").addEventListener("click", closeReadModal);
+
+readModal.addEventListener("click", (e) => {
+  if (e.target === readModal) closeReadModal();
 });
 
-document.getElementById("openLessonModalBtn").addEventListener("click", () => {
-  document.getElementById("lessonModalTitle").textContent = "Create New Lesson";
-  toggleLessonModal(true);
-});
-document.getElementById("emptyNewLessonBtn").addEventListener("click", () => {
-  document.getElementById("lessonModalTitle").textContent = "Create New Lesson";
-  toggleLessonModal(true);
-});
-document.getElementById("closeLessonModalBtn").addEventListener("click", () => toggleLessonModal(false));
-document.getElementById("cancelLessonBtn").addEventListener("click", () => toggleLessonModal(false));
+// Search & Filter Listeners
+document.getElementById("searchInput").addEventListener("input", applyFilters);
+document.getElementById("subjectFilterSelect").addEventListener("change", applyFilters);
+document.getElementById("sortOrderSelect").addEventListener("change", applyFilters);
 
-// Save Lesson (Create or Update)
-lessonForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const id = document.getElementById("editLessonId").value;
-  const title = document.getElementById("lessonTitleInput").value.trim();
-  const subject = document.getElementById("lessonSubjectSelect").value;
-  const notes = document.getElementById("lessonNotesInput").value.trim();
-  const fileInput = document.getElementById("lessonFileInput");
-  const newlyPickedFile = fileInput.files[0];
-
-  let filePayload = null;
-  if (newlyPickedFile) {
-    filePayload = {
-      name: newlyPickedFile.name,
-      type: newlyPickedFile.type,
-      size: newlyPickedFile.size,
-      blob: newlyPickedFile
-    };
-  } else if (existingFileBlob) {
-    filePayload = existingFileBlob;
-  }
-
-  if (id) {
-    // Updating existing lesson
-    const updated = {
-      id: Number(id),
-      title,
-      subject,
-      notes,
-      file: filePayload,
-      createdAt: new Date().toISOString() // Updates modification time
-    };
-    await dbUpdateLesson(updated);
-  } else {
-    // Creating brand new lesson
-    const newLesson = {
-      title,
-      subject,
-      notes,
-      file: filePayload,
-      createdAt: new Date().toISOString()
-    };
-    await dbAddLesson(newLesson);
-  }
-
-  toggleLessonModal(false);
-  refreshAll();
-});
-
-// Subject Modal Controls
-const subjectModal = document.getElementById("subjectModal");
-const addSubjectForm = document.getElementById("addSubjectForm");
-
-function toggleSubjectModal(show) {
-  if (show) subjectModal.classList.add("modal-show");
-  else subjectModal.classList.remove("modal-show");
-}
-
-document.getElementById("openSubjectModalBtn").addEventListener("click", () => toggleSubjectModal(true));
-document.getElementById("quickAddSubjectBtn").addEventListener("click", () => toggleSubjectModal(true));
-document.getElementById("closeSubjectModalBtn").addEventListener("click", () => toggleSubjectModal(false));
-document.getElementById("doneSubjectBtn").addEventListener("click", () => toggleSubjectModal(false));
-
-addSubjectForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const nameInput = document.getElementById("newSubjectNameInput");
-  const name = nameInput.value.trim();
-  if (name) {
-    await dbAddSubject(name);
-    nameInput.value = "";
-    refreshAll();
-  }
-});
-
-// Listeners for filters
-document.getElementById("searchInput").addEventListener("input", applyFiltersAndSort);
-document.getElementById("subjectFilterSelect").addEventListener("change", applyFiltersAndSort);
-document.getElementById("sortOrderSelect").addEventListener("change", applyFiltersAndSort);
-
-// --- 7. APP BOOTSTRAP ---
-window.addEventListener("DOMContentLoaded", async () => {
-  await initDB();
+// --- INITIALIZE ON PAGE LOAD ---
+window.addEventListener("DOMContentLoaded", () => {
   initClockAndCalendar();
-
-  // If opening for the very first time, seed one default subject if empty
-  const existingSubs = await dbGetSubjects();
-  if (existingSubs.length === 0) {
-    await dbAddSubject("General Studies");
-  }
-
-  refreshAll();
+  renderSubjects();
+  renderLessons(LESSONS_DATA);
 });

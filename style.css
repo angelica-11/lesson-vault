@@ -1,17 +1,17 @@
-/* Scrollbar Aesthetics */
+/* Eye-Friendly Smooth Dark Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: #0b1120;
 }
 ::-webkit-scrollbar-thumb {
   background: #1e293b;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2563eb;
+  background: #3b82f6;
 }
 
 /* Modal Helper */
@@ -19,10 +19,15 @@
   display: flex !important;
 }
 
-/* Custom Calendar Day Selection & Indicator */
+/* Calendar Today Highlight */
 .calendar-today {
   background-color: #2563eb !important;
   color: #ffffff !important;
   font-weight: 700;
   border-radius: 0.5rem;
+}
+
+/* Clean line formatting for notes */
+.modal-content p, .modal-content div {
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
