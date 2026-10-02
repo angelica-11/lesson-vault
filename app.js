@@ -1,6 +1,5 @@
 /**
  * Hardcoded Lesson Data for Angelica's Lesson Storage
- * All lessons, formatted overviews, and full paragraphs are stored right here.
  */
 const LESSONS_DATA = [
   {
@@ -30,7 +29,7 @@ In 1989, Sir Tim Berners-Lee invented the World Wide Web at CERN in Geneva, Swit
   - Technologies: Blockchain, Artificial Intelligence (AI), Machine Learning (ML), Natural Language Processing (NLP), and AR/VR immersive interfaces.
   - Applications: Ethereum smart contracts, DeFi platforms, and intelligent assistants.
 
-📌 Types of Websites:
+📌 Primary Types of Websites:
 • Personal Websites: Portfolios, personal blogs, and digital resumes for self-expression and identity.
 • Business Websites: Corporate sites and local business profiles for customer trust and commerce.
 • E-Commerce Websites: Online marketplaces with catalogs, carts, and secure payment gateways (Amazon, eBay).
@@ -195,13 +194,20 @@ let currentCalDate = new Date();
 function initClockAndCalendar() {
   function updateClock() {
     const now = new Date();
-    document.getElementById("liveClock").textContent = now.toLocaleTimeString([], { hour12: false });
-    document.getElementById("liveDateShort").textContent = now.toLocaleDateString(undefined, {
-      weekday: "long",
-      month: "short",
-      day: "numeric",
-      year: "numeric"
-    });
+    const clockEl = document.getElementById("liveClock");
+    const dateEl = document.getElementById("liveDateShort");
+
+    if (clockEl) {
+      clockEl.textContent = now.toLocaleTimeString([], { hour12: false });
+    }
+    if (dateEl) {
+      dateEl.textContent = now.toLocaleDateString(undefined, {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      });
+    }
   }
 
   setInterval(updateClock, 1000);
@@ -222,8 +228,9 @@ function initClockAndCalendar() {
 function renderCalendar(date) {
   const monthYearLabel = document.getElementById("calendarMonthYear");
   const daysContainer = document.getElementById("calendarDays");
-  daysContainer.innerHTML = "";
+  if (!daysContainer || !monthYearLabel) return;
 
+  daysContainer.innerHTML = "";
   const year = date.getFullYear();
   const month = date.getMonth();
 
@@ -255,61 +262,11 @@ function renderCalendar(date) {
   }
 }
 
-// --- CATEGORIES & SIDEBAR ---
-function extractSubjects() {
-  return Array.from(new Set(LESSONS_DATA.map(l => l.subject)));
-}
-
-function renderSubjects() {
-  const subjects = extractSubjects();
-  const filterSelect = document.getElementById("subjectFilterSelect");
-  const sidebarList = document.getElementById("subjectListSidebar");
-  const countBadge = document.getElementById("subjectCountBadge");
-
-  countBadge.textContent = subjects.length;
-
-  filterSelect.innerHTML = `<option value="all">All Folders</option>`;
-  sidebarList.innerHTML = "";
-
-  // "All Folders" quick button
-  const allItem = document.createElement("div");
-  allItem.className = "flex items-center justify-between text-xs py-2 px-3 rounded-xl hover:bg-blue-950/60 cursor-pointer text-slate-300 hover:text-white transition font-medium border border-transparent hover:border-blue-900/40";
-  allItem.innerHTML = `<span class="flex items-center gap-2"><i data-lucide="folder" class="w-3.5 h-3.5 text-blue-400"></i> All Folders</span><span class="text-[10px] bg-blue-950 border border-blue-900/50 text-blue-300 px-2 py-0.5 rounded-full font-mono">${LESSONS_DATA.length}</span>`;
-  allItem.addEventListener("click", () => {
-    filterSelect.value = "all";
-    applyFilters();
-  });
-  sidebarList.appendChild(allItem);
-
-  subjects.forEach(subject => {
-    filterSelect.innerHTML += `<option value="${subject}">${subject}</option>`;
-
-    const count = LESSONS_DATA.filter(l => l.subject === subject).length;
-    const item = document.createElement("div");
-    item.className = "flex items-center justify-between text-xs py-2 px-3 rounded-xl hover:bg-slate-800/60 cursor-pointer text-slate-400 hover:text-slate-200 transition border border-transparent hover:border-slate-700/50";
-    item.innerHTML = `
-      <span class="truncate flex items-center gap-2"><i data-lucide="folder-closed" class="w-3.5 h-3.5 text-slate-500"></i> ${subject}</span>
-      <span class="text-[10px] bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-mono">${count}</span>
-    `;
-    item.addEventListener("click", () => {
-      filterSelect.value = subject;
-      applyFilters();
-    });
-    sidebarList.appendChild(item);
-  });
-}
-
-// --- RENDER LESSON FOLDER CARDS ---
+// --- RENDER LESSON BOXES ON SCREEN ---
 function renderLessons(lessons) {
   const grid = document.getElementById("lessonsGrid");
-  const empty = document.getElementById("emptyLessonsState");
+  if (!grid) return;
   grid.innerHTML = "";
-
-  if (lessons.length === 0) {
-    empty.classList.remove("hidden");
-    return;
-  }
-  empty.classList.add("hidden");
 
   lessons.forEach(lesson => {
     const formattedDate = new Date(lesson.date).toLocaleDateString(undefined, {
@@ -319,66 +276,41 @@ function renderLessons(lessons) {
     });
 
     const card = document.createElement("div");
-    // Digital Folder Aesthetic Box
-    card.className = "bg-[#111c35] border border-blue-900/30 hover:border-blue-500/60 rounded-2xl p-5 flex flex-col justify-between transition-all duration-200 group shadow-lg hover:shadow-blue-500/10 cursor-pointer";
+    // Aesthetic Folder Card Box
+    card.className = "bg-[#0d162a] border border-blue-900/30 hover:border-blue-500/70 rounded-2xl p-5 flex flex-col justify-between transition-all duration-200 group shadow-lg hover:shadow-blue-500/10 cursor-pointer";
 
     card.innerHTML = `
       <div>
         <div class="flex items-center justify-between gap-2 mb-3">
-          <span class="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-blue-950/80 text-blue-400 border border-blue-800/40 flex items-center gap-1.5">
-            <i data-lucide="folder" class="w-3 h-3"></i> ${lesson.subject}
+          <span class="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-blue-950/90 text-blue-400 border border-blue-800/40 flex items-center gap-1.5">
+            <i data-lucide="folder" class="w-3.5 h-3.5"></i> ${lesson.subject}
           </span>
-          <span class="text-[11px] text-slate-400 flex items-center gap-1 font-mono">
+          <span class="text-[11px] text-slate-400 font-mono flex items-center gap-1">
             <i data-lucide="calendar" class="w-3 h-3 text-slate-500"></i> ${formattedDate}
           </span>
         </div>
 
-        <h3 class="text-sm sm:text-base font-bold text-white mb-2 leading-snug group-hover:text-blue-300 transition">${lesson.title}</h3>
+        <h3 class="text-base font-bold text-white mb-2 leading-snug group-hover:text-blue-300 transition">${lesson.title}</h3>
         <p class="text-xs text-slate-400 leading-relaxed line-clamp-3 mb-4">${lesson.overview}</p>
       </div>
 
       <div class="pt-3 border-t border-slate-800/80">
-        <button class="open-details-btn w-full bg-[#0b1120] hover:bg-blue-600 border border-slate-800 hover:border-blue-500 text-blue-400 hover:text-white font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-2 transition duration-150 shadow-sm" data-id="${lesson.id}">
+        <button class="w-full bg-[#060b16] group-hover:bg-blue-600 border border-slate-800 group-hover:border-blue-500 text-blue-400 group-hover:text-white font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-2 transition duration-150 shadow-sm">
           <i data-lucide="book-open" class="w-4 h-4"></i> Open Folder & Read Lesson
         </button>
       </div>
     `;
 
-    // Click anywhere on card or button to open
     card.addEventListener("click", () => openReadModal(lesson));
     grid.appendChild(card);
   });
 
-  lucide.createIcons();
-}
-
-// --- FILTER & SORT ---
-function applyFilters() {
-  const search = document.getElementById("searchInput").value.toLowerCase();
-  const selectedSubject = document.getElementById("subjectFilterSelect").value;
-  const sortOrder = document.getElementById("sortOrderSelect").value;
-
-  let filtered = LESSONS_DATA.filter(l => {
-    const matchesSubject = selectedSubject === "all" || l.subject === selectedSubject;
-    const matchesSearch =
-      l.title.toLowerCase().includes(search) ||
-      l.overview.toLowerCase().includes(search) ||
-      l.whatWeLearned.toLowerCase().includes(search);
-    return matchesSubject && matchesSearch;
-  });
-
-  if (sortOrder === "asc") {
-    filtered.sort((a, b) => a.id - b.id);
-  } else if (sortOrder === "desc") {
-    filtered.sort((a, b) => b.id - a.id);
-  } else if (sortOrder === "title") {
-    filtered.sort((a, b) => a.title.localeCompare(b.title));
+  if (window.lucide) {
+    lucide.createIcons();
   }
-
-  renderLessons(filtered);
 }
 
-// --- MODAL CONTROLS ---
+// --- MODAL VIEWER CONTROLS ---
 const readModal = document.getElementById("readModal");
 
 function openReadModal(lesson) {
@@ -389,7 +321,9 @@ function openReadModal(lesson) {
   document.getElementById("modalTakeaways").textContent = lesson.whatWeLearned;
 
   readModal.classList.add("modal-show");
-  lucide.createIcons();
+  if (window.lucide) {
+    lucide.createIcons();
+  }
 }
 
 function closeReadModal() {
@@ -403,14 +337,8 @@ readModal.addEventListener("click", (e) => {
   if (e.target === readModal) closeReadModal();
 });
 
-// Search & Filter Listeners
-document.getElementById("searchInput").addEventListener("input", applyFilters);
-document.getElementById("subjectFilterSelect").addEventListener("change", applyFilters);
-document.getElementById("sortOrderSelect").addEventListener("change", applyFilters);
-
-// --- INITIALIZE ON PAGE LOAD ---
+// --- INITIALIZE ON LOAD ---
 window.addEventListener("DOMContentLoaded", () => {
   initClockAndCalendar();
-  renderSubjects();
   renderLessons(LESSONS_DATA);
 });
