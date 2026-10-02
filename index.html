@@ -142,43 +142,44 @@
         <div class="absolute -top-12 -right-12 w-44 h-44 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-800/80">
-          <div class="flex items-center gap-3.5">
-            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center text-white text-lg font-bold shadow-md shadow-blue-500/20">
-                <img 
-                src="img.jpg" 
-                alt="Danica S. Amor" 
-                class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl object-cover border-2 border-blue-500/50 shadow-md shadow-blue-500/25 flex-shrink-0" 
-                />
-            </div>
+          <div class="flex items-center gap-4">
+            
+            <!-- PROFILE IMAGE HERE (Loads img.jpg directly) -->
+            <img 
+              src="img.jpg" 
+              alt="Danica S. Amor" 
+              class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-blue-500/60 shadow-lg shadow-blue-500/30 flex-shrink-0 bg-blue-950" 
+            />
+
             <div>
-              <h2 class="text-xl font-bold text-white tracking-tight">Danica S. Amor</h2>
+              <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">Danica S. Amor</h2>
               <p class="text-xs text-blue-400 font-medium">First-Year BS Information Technology Student • FBC</p>
             </div>
           </div>
 
-          <!-- Quick Personal Badges -->
+          <!-- Quick Badges -->
           <div class="flex flex-wrap gap-1.5 text-[11px] font-mono">
             <span class="bg-blue-950/80 border border-blue-800/50 text-blue-300 px-2.5 py-1 rounded-lg">17 yrs old</span>
             <span class="bg-blue-950/80 border border-blue-800/50 text-blue-300 px-2.5 py-1 rounded-lg">Filipino</span>
-            <span class="bg-blue-950/80 border border-blue-800/50 text-blue-300 px-2.5 py-1 rounded-lg">Puerto Princesa City</span>
+            <span class="bg-blue-950/80 border border-blue-800/50 text-blue-300 px-2.5 py-1 rounded-lg">Single</span>
           </div>
         </div>
 
         <!-- Bio Paragraphs -->
         <div class="mt-4 space-y-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
           <p>
-            Welcome to my study storage vault! I am a dedicated first-year college student at FBC from Puerto Princesa City, Palawan, currently pursuing a degree in <span class="text-blue-300 font-medium">Information Technology</span>. I am fascinated by how computing and digital innovation shape our everyday world, and I dream of becoming a skilled IT professional.
+            Welcome to my study storage vault! I am a dedicated first-year college student at FBC from Puerto Princesa City, Palawan, currently pursuing a degree in <span class="text-blue-300 font-medium">Information Technology</span>. I am eager to learn and explore different aspects of technology, computing, and digital innovation, fascinated by how tech shapes the world, and I dream of becoming a skilled IT professional someday.
           </p>
           <p>
-            Outside of my academics, I enjoy cooking, reading books to expand my knowledge and discover new ideas, and playing volleyball—a sport that keeps me active, disciplined, and teaches me the value of teamwork and perseverance. I am also an animal lover and deeply family-oriented.
+            Outside of my studies, I enjoy cooking, reading books to expand my knowledge and discover new ideas, and playing volleyball—a sport that keeps me active, disciplined, and teaches me the value of teamwork and perseverance. I am also an animal lover and family-oriented.
           </p>
-          <div class="bg-blue-950/40 border-l-4 border-blue-500 p-3 rounded-r-xl text-blue-200/90 text-xs">
-            💬 <em>"As a proud working student, I strive to balance my studies and work responsibilities with determination, persistence, passion, and faith to overcome obstacles and build a successful future in tech."</em>
+          <div class="bg-blue-950/40 border-l-4 border-blue-500 p-3.5 rounded-r-xl text-blue-200/90 text-xs">
+            💬 <em>"As a proud working student, I strive to balance my academics and work responsibilities with determination and hard work. There are challenges along the way, but I believe that with persistence, passion, and faith, I can overcome any obstacle and build a successful future in Information Technology."</em>
           </div>
         </div>
       </div>
 
-      <!-- Section Title -->
+      <!-- Section Header -->
       <div class="flex items-center justify-between pt-2">
         <h2 class="text-base font-bold text-white tracking-wide flex items-center gap-2">
           <i data-lucide="folder" class="w-4 h-4 text-blue-400"></i>
@@ -241,7 +242,7 @@
     </div>
   </div>
 
-  <!-- SCRIPT -->
+  <!-- JAVASCRIPT LOGIC & LESSON DATA -->
   <script>
     const LESSONS_DATA = [
       {
@@ -485,7 +486,7 @@ Cybercrime is any unlawful act committed using, or directed at, a computer or di
       }
     }
 
-    // Render Cards
+    // Render Lesson Cards
     function renderLessons() {
       const grid = document.getElementById("lessonsGrid");
       if (!grid) return;
